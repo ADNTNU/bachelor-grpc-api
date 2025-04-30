@@ -13,6 +13,18 @@ import no.ntnu.gr10.bachelor_grpc_api.company.Company;
 
 import java.time.LocalDateTime;
 
+
+/**
+ * Represents a fishery activity associated with a company.
+ * <p>
+ * Maps to the "fishery_activities" table in the database and contains
+ * metadata such as setup and removal timestamps, tool information,
+ * spatial start point, path geometry, and tracking of changes.
+ * </p>
+ *
+ * @author Daniel Neset
+ * @version 30.04.2025
+ */
 @Entity
 @Table(name = "fishery_activities")
 public class FisheryActivity {

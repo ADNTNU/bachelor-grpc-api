@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Utility component for JWT operations such as parsing, validating, and extracting application-specific claims.
@@ -105,7 +104,7 @@ public class JwtUtil {
     return authObjs.stream()
             .map(m -> m.get("authority"))
             .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+            .toList();
   }
 
 }

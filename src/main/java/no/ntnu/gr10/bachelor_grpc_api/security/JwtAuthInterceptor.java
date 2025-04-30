@@ -14,10 +14,7 @@ import net.devh.boot.grpc.server.interceptor.GrpcGlobalServerInterceptor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -121,8 +118,11 @@ public class JwtAuthInterceptor implements ServerInterceptor {
               .orElse(null);
 
       if (target != null && target.isAnnotationPresent(RolesAllowed.class)) {
-        Set<String> required = Set.of(target.getAnnotation(RolesAllowed.class).value());
-        if (!authorities.containsAll(required)) {
+        Role[] roles = target.getAnnotation(RolesAllowed.class).value();
+        Set<String> required = Arrays.stream(roles)
+                .map(Role::getAuthority)
+                .collect(Collectors.toSet());
+        if (!new HashSet<>(authorities).containsAll(required)) {
           call.close(Status.PERMISSION_DENIED.withDescription("Not authorized"), new Metadata());
           return new ServerCall.Listener<>() {};
         }
