@@ -21,6 +21,39 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
 
   @Override
   @RolesAllowed({"key2"})
+  public void getFisheryActivity(GetFisheryActivityRequest req, StreamObserver<ResponseFisheryActivity> respObs){
+
+    Integer companyId = (Integer) SecurityConstants.COMPANY_ID_CTX_KEY.get().intValue();
+
+    FisheryActivity fisheryActivity = fisheryActivityService.getByIdAndCompanyId(req.getId(), companyId);
+
+    ResponseFisheryActivity response = ResponseFisheryActivity.newBuilder()
+            .setId(fisheryActivity.getId())
+            .setSetupDateTime(toTimestamp(fisheryActivity.getSetupDateTime()))
+            .setToolTypeCode(fisheryActivity.getToolTypeCode())
+            .setToolTypeName(fisheryActivity.getToolTypeName())
+            .setToolId(fisheryActivity.getToolId())
+            .setLastChangedDateTime(toTimestamp(fisheryActivity.getLastChangedDateTime()))
+            .setStartingPointLat(fisheryActivity.getStartingPointLat())
+            .setStartingPointLon(fisheryActivity.getStartingPointLon())
+            .setLength(fisheryActivity.getLength())
+            .setGeometry(fisheryActivity.getGeometry())
+            .build();
+
+    if (fisheryActivity.getRemovedDateTime() != null) {
+      response = response.toBuilder()
+              .setRemovedDateTime(toTimestamp(fisheryActivity.getRemovedDateTime()))
+              .build();
+    }
+
+    respObs.onNext(response);
+    respObs.onCompleted();
+
+  }
+
+
+  @Override
+  @RolesAllowed({"key2"})
   public void listFisheryActivities(ListFisheryActivitiesRequest req,
                                  StreamObserver<ListFisheryActivitiesResponse> respObs) {
 
@@ -63,7 +96,5 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
             .setNanos(ldt.getNano())
             .build();
   }
-
-
 
 }

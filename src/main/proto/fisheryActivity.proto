@@ -10,48 +10,32 @@ option java_outer_classname = "FisheryActivityProto";
 import "google/protobuf/timestamp.proto";
 
 message ResponseFisheryActivity {
-  // Unique identifier of the activity
   int64 id = 1;
-
-  // Timestamp when the activity was set up
   google.protobuf.Timestamp setup_date_time = 2;
-
-  // Code of the tool type
   string tool_type_code = 3;
-
-  // Human-readable name of the tool type
   string tool_type_name = 4;
-
-  // UUID of the specific tool used
   string tool_id = 5;
-
-  // Timestamp when the tool was removed (nullable)
   google.protobuf.Timestamp removed_date_time = 6;
-
-  // Last time this record was changed
   google.protobuf.Timestamp last_changed_date_time = 7;
-
-  // Latitude of the starting point
   double starting_point_lat = 8;
-
-  // Longitude of the starting point
   double starting_point_lon = 9;
-
-  // Length of the activity in meters
   double length = 10;
-
-  // Well-Known Text (WKT) geometry of the path
   string geometry = 11;
+}
+
+message GetFisheryActivityRequest {
+  int64 id = 1;
+}
+
+message ListFisheryActivitiesRequest {
 }
 
 message ListFisheryActivitiesResponse {
   repeated ResponseFisheryActivity activities = 1;
 }
 
-message ListFisheryActivitiesRequest {
-}
 
 service FisheryActivityService {
-  rpc GetFisheryActivity(ResponseFisheryActivity) returns (ResponseFisheryActivity);
+  rpc GetFisheryActivity(GetFisheryActivityRequest) returns (ResponseFisheryActivity);
   rpc ListFisheryActivities(ListFisheryActivitiesRequest) returns (ListFisheryActivitiesResponse);
 }
