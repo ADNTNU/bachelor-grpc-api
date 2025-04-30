@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: bachelor-grpc-api
+  grpc:
+    server:
+      port: 9090
+
+jwt:
+  secret_key: ${JWT_KEY:YouAndIJudasEffectSpineLittleDarkAgesKnockAtMyDoor}
