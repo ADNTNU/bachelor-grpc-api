@@ -10,16 +10,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: ${DDL:update}
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
-
-  grpc:
-    server:
-      port: 9090
 
 jwt:
   secret_key: ${JWT_KEY:YouAndIJudasEffectSpineLittleDarkAgesKnockAtMyDoor}

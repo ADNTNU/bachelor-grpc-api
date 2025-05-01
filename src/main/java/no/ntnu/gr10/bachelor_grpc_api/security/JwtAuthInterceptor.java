@@ -13,6 +13,7 @@ import io.jsonwebtoken.JwtException;
 import net.devh.boot.grpc.server.interceptor.GrpcGlobalServerInterceptor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -107,8 +108,20 @@ public class JwtAuthInterceptor implements ServerInterceptor {
             .withValue(SecurityConstants.AUTHORITIES_CTX_KEY, authorities);
 
     String serviceName = call.getMethodDescriptor().getServiceName();
-    String rpcMethod   = call.getMethodDescriptor().getBareMethodName();
-    String javaMethod  = Character.toLowerCase(rpcMethod.charAt(0)) + rpcMethod.substring(1);
+    String rpcMethod = call.getMethodDescriptor().getBareMethodName();
+    if (rpcMethod == null || rpcMethod.isEmpty()) {
+      call.close(
+              Status.INTERNAL
+                      .withDescription("Could not determine RPC method name")
+                      .withCause(null),
+              new Metadata()
+      );
+      return new ServerCall.Listener<>() {};
+    }
+
+    String javaMethod = Character.toLowerCase(rpcMethod.charAt(0))
+            + rpcMethod.substring(1);
+
 
     BindableService svcBean = serviceBeans.get(serviceName);
     if (svcBean != null) {
@@ -131,4 +144,6 @@ public class JwtAuthInterceptor implements ServerInterceptor {
 
     return Contexts.interceptCall(ctx, call, headers, next);
   }
+
+
 }
