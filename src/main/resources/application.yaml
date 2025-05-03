@@ -17,5 +17,10 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
+grpc:
+  server:
+    port: 9091
+    reflection-service-enabled: true
+
 jwt:
   secret_key: ${JWT_KEY:YouAndIJudasEffectSpineLittleDarkAgesKnockAtMyDoor}

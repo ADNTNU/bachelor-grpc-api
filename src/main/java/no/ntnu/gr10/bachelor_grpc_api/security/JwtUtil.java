@@ -2,11 +2,12 @@ package no.ntnu.gr10.bachelor_grpc_api.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
@@ -25,19 +26,8 @@ import java.util.Objects;
 @Component
 public class JwtUtil {
 
-  private final JwtParser jwtParser;
-
-
-  /**
-   * Constructs a JwtUtil with the provided secret key for HS256 signature verification.
-   *
-   * @param jwtSecret the secret key used to sign and verify JWTs
-   */
-  public JwtUtil(@Value("${jwt.secret_key}") String jwtSecret) {
-    this.jwtParser = Jwts.parserBuilder()
-            .setSigningKey(Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8)))
-            .build();
-  }
+  @Value("${jwt.secret_key}")
+  private String secretKey;
 
 
   /**
@@ -48,7 +38,7 @@ public class JwtUtil {
    * @throws JwtException if the token is invalid, expired, or cannot be parsed
    */
   public Claims validateAndGetClaims(String token) throws JwtException {
-    return jwtParser.parseClaimsJws(token).getBody();
+    return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload();
   }
 
 
@@ -105,6 +95,11 @@ public class JwtUtil {
             .map(m -> m.get("authority"))
             .filter(Objects::nonNull)
             .toList();
+  }
+
+  private SecretKey getSigningKey(){
+    byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+    return new SecretKeySpec(keyBytes, 0, keyBytes.length, "HmacSHA256");
   }
 
 }

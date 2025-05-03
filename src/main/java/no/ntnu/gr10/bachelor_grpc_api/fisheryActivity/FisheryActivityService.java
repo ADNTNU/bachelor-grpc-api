@@ -52,11 +52,8 @@ public class FisheryActivityService {
    * @throws FisheryActivityNotFoundException if no matching activity is found
    */
   public FisheryActivity getByIdAndCompanyId(Long id, Integer companyId) throws FisheryActivityNotFoundException{
-    FisheryActivity fisheryActivity = fisheryActivityRepository.findFisheryActivityByIdAndCompany_Id(id, companyId.longValue());
-    if(fisheryActivity == null){
-      throw new FisheryActivityNotFoundException("No Fishery Activity connected to that company or with that id");
-    }
-    return fisheryActivityRepository.findFisheryActivityByIdAndCompany_Id(id, companyId.longValue());
+    return fisheryActivityRepository.findFisheryActivityByIdAndCompany_Id(id, companyId.longValue())
+            .orElseThrow(() -> new FisheryActivityNotFoundException("Fishery Activity with that id could not be found!"));
   }
 
 }
