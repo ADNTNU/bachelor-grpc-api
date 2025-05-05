@@ -1,6 +1,14 @@
 package no.ntnu.gr10.bachelor_grpc_api.administrator;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
 import no.ntnu.gr10.bachelor_grpc_api.company.Company;
 
 @Entity

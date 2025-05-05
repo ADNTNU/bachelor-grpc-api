@@ -87,7 +87,15 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
                       .withCause(e)
                       .asRuntimeException()
       );
+    }catch (Exception e){
+      respObs.onError(
+              Status.INTERNAL
+                      .withDescription(e.getMessage())
+                      .withCause(e)
+                      .asRuntimeException()
+      );
     }
+
   }
 
 
@@ -107,34 +115,43 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
 
     Integer companyId = SecurityConstants.COMPANY_ID_CTX_KEY.get().intValue();
 
-    List<FisheryActivity> fisheryActivity = fisheryActivityService.getAllFisheryActivitiesWithCompanyId(companyId);
+    try {
+      List<FisheryActivity> fisheryActivity = fisheryActivityService.getAllFisheryActivitiesWithCompanyId(companyId);
 
-    List<ResponseFisheryActivity> proto = fisheryActivity.stream()
-            .map(entity -> {
-              var b = ResponseFisheryActivity.newBuilder()
-                      .setId(entity.getId())
-                      .setSetupDateTime(toTimestamp(entity.getSetupDateTime()))
-                      .setToolTypeCode(entity.getToolTypeCode())
-                      .setToolTypeName(entity.getToolTypeName())
-                      .setToolId(entity.getToolId())
-                      .setLastChangedDateTime(toTimestamp(entity.getLastChangedDateTime()))
-                      .setStartingPointLat(entity.getStartingPointLat())
-                      .setStartingPointLon(entity.getStartingPointLon())
-                      .setLength(entity.getLength())
-                      .setGeometry(entity.getGeometry());
-              if (entity.getRemovedDateTime() != null) {
-                b.setRemovedDateTime(toTimestamp(entity.getRemovedDateTime()));
-              }
-              return b.build();
-            })
-            .toList();
+      List<ResponseFisheryActivity> proto = fisheryActivity.stream()
+              .map(entity -> {
+                var b = ResponseFisheryActivity.newBuilder()
+                        .setId(entity.getId())
+                        .setSetupDateTime(toTimestamp(entity.getSetupDateTime()))
+                        .setToolTypeCode(entity.getToolTypeCode())
+                        .setToolTypeName(entity.getToolTypeName())
+                        .setToolId(entity.getToolId())
+                        .setLastChangedDateTime(toTimestamp(entity.getLastChangedDateTime()))
+                        .setStartingPointLat(entity.getStartingPointLat())
+                        .setStartingPointLon(entity.getStartingPointLon())
+                        .setLength(entity.getLength())
+                        .setGeometry(entity.getGeometry());
+                if (entity.getRemovedDateTime() != null) {
+                  b.setRemovedDateTime(toTimestamp(entity.getRemovedDateTime()));
+                }
+                return b.build();
+              })
+              .toList();
 
-    ListFisheryActivitiesResponse reply = ListFisheryActivitiesResponse.newBuilder()
-            .addAllActivities(proto)
-            .build();
+      ListFisheryActivitiesResponse reply = ListFisheryActivitiesResponse.newBuilder()
+              .addAllActivities(proto)
+              .build();
 
-    respObs.onNext(reply);
-    respObs.onCompleted();
+      respObs.onNext(reply);
+      respObs.onCompleted();
+    }catch (Exception e){
+      respObs.onError(
+              Status.INTERNAL
+                      .withDescription(e.getMessage())
+                      .withCause(e)
+                      .asRuntimeException()
+      );
+    }
   }
 
 

@@ -66,7 +66,9 @@ public class FisheryActivity {
   @Column(name = "geometry", columnDefinition = "TEXT")
   private String geometry;
 
-  public FisheryActivity() {}
+  public FisheryActivity() {
+    // Default constructor for JPA
+  }
 
   public Long getId() {
     return id;

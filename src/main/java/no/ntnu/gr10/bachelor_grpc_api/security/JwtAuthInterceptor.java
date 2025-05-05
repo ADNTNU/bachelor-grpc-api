@@ -144,6 +144,4 @@ public class JwtAuthInterceptor implements ServerInterceptor {
 
     return Contexts.interceptCall(ctx, call, headers, next);
   }
-
-
 }

@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Repository interface for accessing FisheryActivity entities from the database.
  * <p>
- * Extends Spring Data JPA's JpaRepository to provide CRUD and query methods
+ * Extends Spring Data JPA JpaRepository to provide CRUD and query methods
  * for FisheryActivity instances.</p>
  *
  * @author Daniel Neset
