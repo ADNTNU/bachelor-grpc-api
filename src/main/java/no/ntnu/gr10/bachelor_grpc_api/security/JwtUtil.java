@@ -72,29 +72,34 @@ public class JwtUtil {
    *   <li>"authorities"</li>
    *   <li>"scopes"</li>
    *   <li>"scope"</li>
-   * </ol>
-   * Each entry is expected to be a map containing an "authority" field.
-   * </p>
    *
    * @param claims the JWT claims object
    * @return a list of authority strings; empty if no relevant claim is found
    */
   @SuppressWarnings("unchecked")
   public List<String> getAuthorities(Claims claims) {
-    List<Map<String,String>> authObjs = claims.get("authorities", List.class);
-    if (authObjs == null) {
-      authObjs = claims.get("scopes", List.class);
+    Object raw = claims.get("scopes", List.class);
+    if (raw instanceof List<?>) {
+      List<?> list = (List<?>) raw;
+      return list.stream()
+              .map(item -> {
+                if (item instanceof String) {
+                  return (String) item;
+                }
+                return null;
+              })
+              .filter(Objects::nonNull)
+              .toList();
     }
-    if (authObjs == null) {
-      authObjs = claims.get("scope", List.class);
+
+    raw = claims.get("scope", List.class);
+    if (raw instanceof List<?> list) {
+      return list.stream()
+              .map(Object::toString)
+              .toList();
     }
-    if (authObjs == null) {
-      return Collections.emptyList();
-    }
-    return authObjs.stream()
-            .map(m -> m.get("authority"))
-            .filter(Objects::nonNull)
-            .toList();
+
+    return Collections.emptyList();
   }
 
   private SecretKey getSigningKey(){
