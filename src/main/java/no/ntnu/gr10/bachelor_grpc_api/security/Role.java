@@ -8,8 +8,8 @@ package no.ntnu.gr10.bachelor_grpc_api.security;
  */
 public enum Role {
 
-  FISHERY_ACTIVITY("fishery_activity"),
-  FISHING_FACILITY("fishing_facility");
+  FISHERY_ACTIVITY("fishery-activity"),
+  FISHING_FACILITY("fishing-facility");
 
   private final String authority;
 
