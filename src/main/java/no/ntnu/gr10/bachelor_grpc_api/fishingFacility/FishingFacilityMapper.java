@@ -22,7 +22,7 @@ public class FishingFacilityMapper {
             .setBbox(entity.getBbox())
             .setGeometry(entity.getGeometry())
             .setVersion(entity.getVersion())
-            .setSetupDatetime(toTimestamp(entity.getSetupDateTime()))
+            .setSetupDateTime(toTimestamp(entity.getSetupDateTime()))
             .setToolId(entity.getToolId());
 
     if (entity.getVesselName() != null)        b.setVesselName(entity.getVesselName());
@@ -40,8 +40,8 @@ public class FishingFacilityMapper {
     if (entity.getRegNum() != null)            b.setRegNum(entity.getRegNum());
     if (entity.getSbrRegNum() != null)         b.setSbrRegNum(entity.getSbrRegNum());
 
-    if (entity.getRemovedDateTime() != null)    b.setRemovedDatetime(toTimestamp(entity.getRemovedDateTime()));
-    if (entity.getLastChangedDateTime() != null) b.setLastChangedDatetime(toTimestamp(entity.getLastChangedDateTime()));
+    if (entity.getRemovedDateTime() != null)    b.setRemovedDateTime(toTimestamp(entity.getRemovedDateTime()));
+    if (entity.getLastChangedDateTime() != null) b.setLastChangedDateTime(toTimestamp(entity.getLastChangedDateTime()));
     if (entity.getSetupProcessedTime() != null) b.setSetupProcessedTime(toTimestamp(entity.getSetupProcessedTime()));
     if (entity.getRemovedProcessedTime() != null)b.setRemovedProcessedTime(toTimestamp(entity.getRemovedProcessedTime()));
 
