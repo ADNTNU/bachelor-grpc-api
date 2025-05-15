@@ -4,8 +4,6 @@ import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import no.ntnu.gr10.bachelor_grpc_api.exception.FisheryActivityNotFoundException;
-import no.ntnu.gr10.bachelor_grpc_api.security.Role;
-import no.ntnu.gr10.bachelor_grpc_api.security.RolesAllowed;
 import no.ntnu.gr10.bachelor_grpc_api.security.SecurityConstants;
 import com.google.protobuf.Timestamp;
 import java.time.LocalDateTime;
@@ -51,7 +49,6 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
    * @param respObs  the gRPC stream observer to send the response or error
    */
   @Override
-  @RolesAllowed({Role.FISHERY_ACTIVITY})
   public void getFisheryActivity(GetFisheryActivityRequest req, StreamObserver<ResponseFisheryActivity> respObs){
 
     Integer companyId = SecurityConstants.COMPANY_ID_CTX_KEY.get().intValue();
@@ -109,7 +106,6 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
    * @param respObs  the gRPC stream observer to send the response or error
    */
   @Override
-  @RolesAllowed({Role.FISHERY_ACTIVITY})
   public void listFisheryActivities(ListFisheryActivitiesRequest req,
                                  StreamObserver<ListFisheryActivitiesResponse> respObs) {
 

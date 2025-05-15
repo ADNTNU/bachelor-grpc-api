@@ -4,8 +4,6 @@ import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import no.ntnu.gr10.bachelor_grpc_api.exception.FishingFacilityNotFoundException;
-import no.ntnu.gr10.bachelor_grpc_api.security.Role;
-import no.ntnu.gr10.bachelor_grpc_api.security.RolesAllowed;
 import no.ntnu.gr10.bachelor_grpc_api.security.SecurityConstants;
 
 import java.time.ZoneOffset;
@@ -21,7 +19,6 @@ public class FishingFacilityServiceImpl extends FishingFacilityServiceGrpc.Fishi
   }
 
   @Override
-  @RolesAllowed({Role.FISHING_FACILITY})
   public void getFishingFacility(GetFishingFacilityRequest req,
                                  StreamObserver<ResponseFishingFacility> respObs) {
 
@@ -54,7 +51,6 @@ public class FishingFacilityServiceImpl extends FishingFacilityServiceGrpc.Fishi
   }
 
   @Override
-  @RolesAllowed({Role.FISHING_FACILITY})
   public void listFishingFacilities(ListFishingFacilitiesRequest req,
                                     StreamObserver<ListFishingFacilitiesResponse> respObs) {
 

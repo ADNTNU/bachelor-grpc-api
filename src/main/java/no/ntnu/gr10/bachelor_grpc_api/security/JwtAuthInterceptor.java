@@ -14,21 +14,12 @@ import net.devh.boot.grpc.server.interceptor.GrpcGlobalServerInterceptor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * gRPC server interceptor that handles JWT-based authentication and authorization.
- * <p>
- * Responsibilities:
- * <ul>
- *   <li>Extract and validate the JWT from the "authorization" Metadata header.</li>
- *   <li>Parse out application-specific claims (companyId, authorities).</li>
- *   <li>Populate the gRPC {@link Context} with these claims for downstream handlers.</li>
- *   <li>Enforce method-level access control via {@link RolesAllowed} annotations.</li>
- * </ul>
- * </p>
  *
  * @author Daniel Neset
  * @version 30.04.2025
@@ -107,7 +98,6 @@ public class JwtAuthInterceptor implements ServerInterceptor {
             .withValue(SecurityConstants.COMPANY_ID_CTX_KEY, companyId)
             .withValue(SecurityConstants.AUTHORITIES_CTX_KEY, authorities);
 
-    String serviceName = call.getMethodDescriptor().getServiceName();
     String rpcMethod = call.getMethodDescriptor().getBareMethodName();
     if (rpcMethod == null || rpcMethod.isEmpty()) {
       call.close(
@@ -117,29 +107,6 @@ public class JwtAuthInterceptor implements ServerInterceptor {
               new Metadata()
       );
       return new ServerCall.Listener<>() {};
-    }
-
-    String javaMethod = Character.toLowerCase(rpcMethod.charAt(0))
-            + rpcMethod.substring(1);
-
-
-    BindableService svcBean = serviceBeans.get(serviceName);
-    if (svcBean != null) {
-      Method target = Arrays.stream(svcBean.getClass().getMethods())
-              .filter(m -> m.getName().equals(javaMethod))
-              .findFirst()
-              .orElse(null);
-
-      if (target != null && target.isAnnotationPresent(RolesAllowed.class)) {
-        Role[] roles = target.getAnnotation(RolesAllowed.class).value();
-        Set<String> required = Arrays.stream(roles)
-                .map(Role::getAuthority)
-                .collect(Collectors.toSet());
-        if (!new HashSet<>(authorities).containsAll(required)) {
-          call.close(Status.PERMISSION_DENIED.withDescription("Not authorized"), new Metadata());
-          return new ServerCall.Listener<>() {};
-        }
-      }
     }
 
     return Contexts.interceptCall(ctx, call, headers, next);
