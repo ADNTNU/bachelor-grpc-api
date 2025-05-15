@@ -5,6 +5,9 @@ import java.time.ZoneOffset;
 
 /**
  * Utility to map between FishingFacility JPA entities and gRPC proto messages.
+ *
+ * @author Daniel Neset
+ * @version 06.05.2025
  */
 public class FishingFacilityMapper {
 

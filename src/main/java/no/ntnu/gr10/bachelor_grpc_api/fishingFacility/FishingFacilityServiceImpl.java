@@ -9,15 +9,39 @@ import no.ntnu.gr10.bachelor_grpc_api.security.SecurityConstants;
 import java.time.ZoneOffset;
 import java.util.List;
 
+
+/**
+ * gRPC service implementation for FishingFacility operations.
+ * <p>
+ * Provides methods to fetch a single FishingFacility by ID or list all facilities
+ * belonging to the authenticated user's company.
+ * </p>
+ *
+ * @author Daniel Neset
+ * @version 06.05.2025
+ */
 @GrpcService
 public class FishingFacilityServiceImpl extends FishingFacilityServiceGrpc.FishingFacilityServiceImplBase{
 
   private final FishingFacilityService fishingFacilityService;
 
+
+  /**
+   * Constructs a new FishingFacilityService with the given service.
+   *
+   * @param fishingFacilityService the business service for FishingFacility operations
+   */
   public FishingFacilityServiceImpl(FishingFacilityService fishingFacilityService){
     this.fishingFacilityService = fishingFacilityService;
   }
 
+
+  /**
+   * Retrieves a single FishsingFacility by its ID.
+   *
+   * @param req      The request containing the activity ID
+   * @param respObs  The gRPC stream observer to send the response or error
+   */
   @Override
   public void getFishingFacility(GetFishingFacilityRequest req,
                                  StreamObserver<ResponseFishingFacility> respObs) {
@@ -50,6 +74,13 @@ public class FishingFacilityServiceImpl extends FishingFacilityServiceGrpc.Fishi
     }
   }
 
+
+  /**
+   * Lists all FishingFacility entities for the authenticated user's company.
+   *
+   * @param req      the (possibly empty) request for listing activities
+   * @param respObs  the gRPC stream observer to send the response or error
+   */
   @Override
   public void listFishingFacilities(ListFishingFacilitiesRequest req,
                                     StreamObserver<ListFishingFacilitiesResponse> respObs) {

@@ -39,11 +39,6 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
 
   /**
    * Retrieves a single FisheryActivity by its ID.
-   * <p>
-   * Requires the caller to have the FISHERY_ACTIVITY role. Reads the company ID from the
-   * security context and delegates to the business service. Responds with NOT_FOUND if no
-   * activity is found.
-   * </p>
    *
    * @param req      the request containing the activity ID
    * @param respObs  the gRPC stream observer to send the response or error
@@ -98,9 +93,6 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
 
   /**
    * Lists all FisheryActivity entities for the authenticated user's company.
-   * <p>
-   * Returns an empty list if no activities exist. Requires the FISHERY_ACTIVITY role.
-   * </p>
    *
    * @param req      the (possibly empty) request for listing activities
    * @param respObs  the gRPC stream observer to send the response or error

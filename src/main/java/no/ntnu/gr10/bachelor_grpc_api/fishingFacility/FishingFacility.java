@@ -13,6 +13,17 @@ import no.ntnu.gr10.bachelor_grpc_api.company.Company;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a fishing facility associated with a company.
+ * <p>
+ * Maps to the "fishing_facility" table in the database and contains
+ * metadata such as setup and removal timestamps, tool information,
+ * spatial start point, path geometry, and tracking of changes.
+ * </p>
+ *
+ * @author Daniel Neset
+ * @version 06.05.2025
+ */
 @Entity
 @Table(name = "fishing_facility")
 public class FishingFacility {
