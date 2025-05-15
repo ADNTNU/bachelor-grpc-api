@@ -1,4 +1,4 @@
-package no.ntnu.gr10.bachelor_grpc_api.exception;
+package no.ntnu.gr10.bachelorgrpcapi.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -11,6 +11,11 @@ import jakarta.persistence.EntityNotFoundException;
  * @version 01.05.2025
  */
 public class FishingFacilityNotFoundException extends EntityNotFoundException {
+  /**
+   * Default constructor for FishingFacilityNotFoundException.
+   *
+   * @param message the error message to be associated with this exception
+   */
   public FishingFacilityNotFoundException(String message) {
     super(message);
   }

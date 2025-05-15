@@ -1,20 +1,20 @@
-package no.ntnu.gr10.bachelor_grpc_api.fisheryActivity;
+package no.ntnu.gr10.bachelorgrpcapi.fisheryactivity;
 
+import com.google.protobuf.Timestamp;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
-import net.devh.boot.grpc.server.service.GrpcService;
-import no.ntnu.gr10.bachelor_grpc_api.exception.FisheryActivityNotFoundException;
-import no.ntnu.gr10.bachelor_grpc_api.security.SecurityConstants;
-import com.google.protobuf.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import net.devh.boot.grpc.server.service.GrpcService;
+import no.ntnu.gr10.bachelorgrpcapi.exception.FisheryActivityNotFoundException;
+import no.ntnu.gr10.bachelorgrpcapi.security.SecurityConstants;
 
 
 /**
  * gRPC service implementation for FisheryActivity operations.
- * <p>
- * Provides methods to fetch a single FisheryActivity by ID or list all activities
+ *
+ * <p>Provides methods to fetch a single FisheryActivity by ID or list all activities
  * belonging to the authenticated user's company.
  * </p>
  *
@@ -22,7 +22,8 @@ import java.util.List;
  * @version 30.04.2025
  */
 @GrpcService
-public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.FisheryActivityServiceImplBase{
+public class FisheryActivityServiceImpl
+        extends FisheryActivityServiceGrpc.FisheryActivityServiceImplBase {
 
   private final FisheryActivityService fisheryActivityService;
 
@@ -32,7 +33,7 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
    *
    * @param fisheryActivityService the business service for FisheryActivity operations
    */
-  public FisheryActivityServiceImpl(FisheryActivityService fisheryActivityService){
+  public FisheryActivityServiceImpl(FisheryActivityService fisheryActivityService) {
     this.fisheryActivityService = fisheryActivityService;
   }
 
@@ -40,16 +41,20 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
   /**
    * Retrieves a single FisheryActivity by its ID.
    *
-   * @param req      the request containing the activity ID
-   * @param respObs  the gRPC stream observer to send the response or error
+   * @param req     the request containing the activity ID
+   * @param respObs the gRPC stream observer to send the response or error
    */
   @Override
-  public void getFisheryActivity(GetFisheryActivityRequest req, StreamObserver<ResponseFisheryActivity> respObs){
+  public void getFisheryActivity(
+          GetFisheryActivityRequest req,
+          StreamObserver<ResponseFisheryActivity> respObs
+  ) {
 
     Integer companyId = SecurityConstants.COMPANY_ID_CTX_KEY.get().intValue();
 
-    try{
-      FisheryActivity fisheryActivity = fisheryActivityService.getByIdAndCompanyId(req.getId(), companyId);
+    try {
+      FisheryActivity fisheryActivity = fisheryActivityService
+              .getByIdAndCompanyId(req.getId(), companyId);
 
       ResponseFisheryActivity response = ResponseFisheryActivity.newBuilder()
               .setId(fisheryActivity.getId())
@@ -72,14 +77,14 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
 
       respObs.onNext(response);
       respObs.onCompleted();
-    }catch (FisheryActivityNotFoundException e){
+    } catch (FisheryActivityNotFoundException e) {
       respObs.onError(
               Status.NOT_FOUND
                       .withDescription(e.getMessage())
                       .withCause(e)
                       .asRuntimeException()
       );
-    }catch (Exception e){
+    } catch (Exception e) {
       respObs.onError(
               Status.INTERNAL
                       .withDescription(e.getMessage())
@@ -94,17 +99,18 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
   /**
    * Lists all FisheryActivity entities for the authenticated user's company.
    *
-   * @param req      the (possibly empty) request for listing activities
-   * @param respObs  the gRPC stream observer to send the response or error
+   * @param req     the (possibly empty) request for listing activities
+   * @param respObs the gRPC stream observer to send the response or error
    */
   @Override
   public void listFisheryActivities(ListFisheryActivitiesRequest req,
-                                 StreamObserver<ListFisheryActivitiesResponse> respObs) {
+                                    StreamObserver<ListFisheryActivitiesResponse> respObs) {
 
     Integer companyId = SecurityConstants.COMPANY_ID_CTX_KEY.get().intValue();
 
     try {
-      List<FisheryActivity> fisheryActivity = fisheryActivityService.getAllFisheryActivitiesWithCompanyId(companyId);
+      List<FisheryActivity> fisheryActivity = fisheryActivityService
+              .getAllFisheryActivitiesWithCompanyId(companyId);
 
       List<ResponseFisheryActivity> proto = fisheryActivity.stream()
               .map(entity -> {
@@ -132,7 +138,7 @@ public class FisheryActivityServiceImpl extends FisheryActivityServiceGrpc.Fishe
 
       respObs.onNext(reply);
       respObs.onCompleted();
-    }catch (Exception e){
+    } catch (Exception e) {
       respObs.onError(
               Status.INTERNAL
                       .withDescription(e.getMessage())

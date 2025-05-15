@@ -1,15 +1,14 @@
-package no.ntnu.gr10.bachelor_grpc_api.fisheryActivity;
-
-import no.ntnu.gr10.bachelor_grpc_api.exception.FisheryActivityNotFoundException;
-import org.springframework.stereotype.Service;
+package no.ntnu.gr10.bachelorgrpcapi.fisheryactivity;
 
 import java.util.List;
+import no.ntnu.gr10.bachelorgrpcapi.exception.FisheryActivityNotFoundException;
+import org.springframework.stereotype.Service;
 
 
 /**
  * Service layer for managing FisheryActivity entities.
- * <p>
- * Provides methods to retrieve activities by company or by specific ID,
+ *
+ * <p>Provides methods to retrieve activities by company or by specific ID,
  * throwing a FisheryActivityNotFoundException when no results are found.
  * </p>
  *
@@ -27,7 +26,7 @@ public class FisheryActivityService {
    *
    * @param fisheryActivityRepository the repository handling FisheryActivity entities
    */
-  public FisheryActivityService(FisheryActivityRepository fisheryActivityRepository){
+  public FisheryActivityService(FisheryActivityRepository fisheryActivityRepository) {
     this.fisheryActivityRepository = fisheryActivityRepository;
   }
 
@@ -51,9 +50,13 @@ public class FisheryActivityService {
    * @return the FisheryActivity entity matching the criteria
    * @throws FisheryActivityNotFoundException if no matching activity is found
    */
-  public FisheryActivity getByIdAndCompanyId(Long id, Integer companyId) throws FisheryActivityNotFoundException{
+  public FisheryActivity getByIdAndCompanyId(Long id, Integer companyId)
+          throws FisheryActivityNotFoundException {
     return fisheryActivityRepository.findFisheryActivityByIdAndCompany_Id(id, companyId.longValue())
-            .orElseThrow(() -> new FisheryActivityNotFoundException("Fishery Activity with that id could not be found!"));
+            .orElseThrow(() -> new FisheryActivityNotFoundException(
+                            "Fishery Activity with that id could not be found!"
+                    )
+            );
   }
 
 }

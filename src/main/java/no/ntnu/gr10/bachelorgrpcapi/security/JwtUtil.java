@@ -1,22 +1,24 @@
-package no.ntnu.gr10.bachelor_grpc_api.security;
+package no.ntnu.gr10.bachelorgrpcapi.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 
 /**
- * Utility component for JWT operations such as parsing, validating, and extracting application-specific claims.
- * <p>
- * This class centralizes all JWT handling logic to avoid duplication and ensure consistent behavior.
+ * Utility component for JWT operations such as parsing, validating,
+ * and extracting application-specific claims.
+ *
+ * <p>This class centralizes all JWT handling logic to avoid duplication and
+ * ensure consistent behavior.
  * </p>
  *
  * @author Daniel Neset
@@ -43,8 +45,8 @@ public class JwtUtil {
 
   /**
    * Extracts the company identifier from the JWT claims.
-   * <p>
-   * It first attempts to read the "company" claim, then falls back to "companyId".
+   *
+   * <p>It first attempts to read the "company" claim, then falls back to "companyId".
    * </p>
    *
    * @param claims the JWT claims object
@@ -65,12 +67,13 @@ public class JwtUtil {
 
   /**
    * Extracts authority strings from the JWT claims by checking multiple possible claim keys.
-   * <p>
-   * The order of fallback is:
+   *
+   * <p>The order of fallback is:
    * <ol>
    *   <li>"authorities"</li>
    *   <li>"scopes"</li>
    *   <li>"scope"</li>
+   *  </ol>
    *
    * @param claims the JWT claims object
    * @return a list of authority strings; empty if no relevant claim is found
@@ -101,7 +104,7 @@ public class JwtUtil {
     return Collections.emptyList();
   }
 
-  private SecretKey getSigningKey(){
+  private SecretKey getSigningKey() {
     byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
     return new SecretKeySpec(keyBytes, 0, keyBytes.length, "HmacSHA256");
   }

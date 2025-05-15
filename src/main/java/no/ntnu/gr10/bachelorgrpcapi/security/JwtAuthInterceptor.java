@@ -1,6 +1,5 @@
-package no.ntnu.gr10.bachelor_grpc_api.security;
+package no.ntnu.gr10.bachelorgrpcapi.security;
 
-import io.grpc.BindableService;
 import io.grpc.Context;
 import io.grpc.Contexts;
 import io.grpc.Metadata;
@@ -10,13 +9,11 @@ import io.grpc.ServerInterceptor;
 import io.grpc.Status;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
+import java.util.List;
 import net.devh.boot.grpc.server.interceptor.GrpcGlobalServerInterceptor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * gRPC server interceptor that handles JWT-based authentication and authorization.
@@ -29,7 +26,7 @@ import java.util.stream.Collectors;
 public class JwtAuthInterceptor implements ServerInterceptor {
 
   private final JwtUtil jwtUtil;
-  private final Map<String, BindableService> serviceBeans;
+//  private final Map<String, BindableService> serviceBeans;
 
 
   /**
@@ -41,14 +38,14 @@ public class JwtAuthInterceptor implements ServerInterceptor {
    */
   public JwtAuthInterceptor(JwtUtil jwtUtil, ApplicationContext applicationContext) {
     this.jwtUtil = jwtUtil;
-    this.serviceBeans = applicationContext
-            .getBeansOfType(BindableService.class)
-            .values()
-            .stream()
-            .collect(Collectors.toMap(
-                    bs -> bs.bindService().getServiceDescriptor().getName(),
-                    bs -> bs
-            ));
+//    this.serviceBeans = applicationContext
+//            .getBeansOfType(BindableService.class)
+//            .values()
+//            .stream()
+//            .collect(Collectors.toMap(
+//                    bs -> bs.bindService().getServiceDescriptor().getName(),
+//                    bs -> bs
+//            ));
   }
 
 

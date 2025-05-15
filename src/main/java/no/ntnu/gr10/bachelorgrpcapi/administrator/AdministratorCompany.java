@@ -1,4 +1,4 @@
-package no.ntnu.gr10.bachelor_grpc_api.administrator;
+package no.ntnu.gr10.bachelorgrpcapi.administrator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -9,7 +9,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
-import no.ntnu.gr10.bachelor_grpc_api.company.Company;
+import lombok.Getter;
+import lombok.Setter;
+import no.ntnu.gr10.bachelorgrpcapi.company.Company;
 
 /**
  * Represents the association between an administrator and a company.
@@ -19,6 +21,7 @@ import no.ntnu.gr10.bachelor_grpc_api.company.Company;
  * @author Anders Lund
  * @version 23.04.2025
  */
+@Getter
 @Entity
 @Table(name = "administrator_company")
 public class AdministratorCompany {
@@ -26,9 +29,11 @@ public class AdministratorCompany {
   @EmbeddedId
   private AdministratorCompanyId id = new AdministratorCompanyId();
 
+  @Setter
   @Column
   private boolean enabled = true;
 
+  @Setter
   @Column
   private boolean accepted = false;
 
@@ -44,51 +49,49 @@ public class AdministratorCompany {
   @Column(nullable = false)
   private AdministratorRole role;
 
+  /**
+   * Default constructor for serialization.
+   */
   public AdministratorCompany() {
     // Default constructor for JPA
   }
 
-  public AdministratorCompanyId getId() {
-    return id;
-  }
-
-  public boolean isEnabled() {
-    return enabled;
-  }
-
-  public void setEnabled(boolean enabled) {
-    this.enabled = enabled;
-  }
-
-  public boolean isAccepted() {
-    return accepted;
-  }
-
-  public void setAccepted(boolean accepted) {
-    this.accepted = accepted;
-  }
-
-  public Administrator getAdministrator() {
-    return administrator;
-  }
-
+  /**
+   * Sets the administrator of the administrator-company relation.
+   *
+   * @param administrator The administrator to set
+   * @throws IllegalArgumentException if the administrator is null
+   */
   public void setAdministrator(Administrator administrator) {
+    if (administrator == null) {
+      throw new IllegalArgumentException("administrator cannot be null");
+    }
     this.administrator = administrator;
   }
 
-  public Company getCompany() {
-    return company;
-  }
-
+  /**
+   * Sets the company of the administrator-company relation.
+   *
+   * @param company The company to set
+   * @throws IllegalArgumentException if the company is null
+   */
   public void setCompany(Company company) {
+    if (company == null) {
+      throw new IllegalArgumentException("company cannot be null");
+    }
     this.company = company;
   }
 
-  public AdministratorRole getRole() {
-    return role;
-  }
-
+  /**
+   * Sets the role of the administrator-company relation.
+   *
+   * @param role The role to set
+   * @throws IllegalArgumentException if the role is null
+   */
   public void setRole(AdministratorRole role) {
+    if (role == null) {
+      throw new IllegalArgumentException("role cannot be null");
+    }
     this.role = role;
   }
 }

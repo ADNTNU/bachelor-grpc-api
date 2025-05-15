@@ -1,11 +1,11 @@
-package no.ntnu.gr10.bachelor_grpc_api.administrator;
+package no.ntnu.gr10.bachelorgrpcapi.administrator;
 
-import no.ntnu.gr10.bachelor_grpc_api.exception.InvalidRoleException;
+import no.ntnu.gr10.bachelorgrpcapi.exception.InvalidRoleException;
 
 /**
  * Enum representing the roles of an administrator.
- * <p>
- * The roles are:
+ *
+ * <p>The roles are:
  * <ul>
  *   <li>OWNER: The owner of the company.</li>
  *   <li>ADMINISTRATOR: An administrator of the company.</li>

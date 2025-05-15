@@ -1,15 +1,14 @@
-package no.ntnu.gr10.bachelor_grpc_api.fishingFacility;
-
-import no.ntnu.gr10.bachelor_grpc_api.exception.FisheryActivityNotFoundException;
-import no.ntnu.gr10.bachelor_grpc_api.exception.FishingFacilityNotFoundException;
-import org.springframework.stereotype.Service;
+package no.ntnu.gr10.bachelorgrpcapi.fishingfacility;
 
 import java.util.List;
+import no.ntnu.gr10.bachelorgrpcapi.exception.FishingFacilityNotFoundException;
+import org.springframework.stereotype.Service;
+
 
 /**
  * Service layer for managing FishingFacility entities.
- * <p>
- * Provides methods to retrieve activities by company or by specific ID,
+ *
+ * <p>Provides methods to retrieve activities by company or by specific ID,
  * throwing a FishingFacilityNotFoundException when no results are found.
  * </p>
  *
@@ -26,7 +25,7 @@ public class FishingFacilityService {
    *
    * @param fishingFacilityRepository the repository handling FisheryActivity entities
    */
-  public FishingFacilityService(FishingFacilityRepository fishingFacilityRepository){
+  public FishingFacilityService(FishingFacilityRepository fishingFacilityRepository) {
     this.fishingFacilityRepository = fishingFacilityRepository;
   }
 
@@ -36,7 +35,7 @@ public class FishingFacilityService {
    * @param companyId the ID of the company whose facilities to fetch
    * @return a list of FishingFacility entities
    */
-  public List<FishingFacility> getAllFishingFacilitiesWithCompanyId(Integer companyId){
+  public List<FishingFacility> getAllFishingFacilitiesWithCompanyId(Integer companyId) {
     return fishingFacilityRepository.findAllByCompany_Id(companyId.longValue());
   }
 
@@ -48,9 +47,13 @@ public class FishingFacilityService {
    * @return The FishingFacility entity matching the criteria
    * @throws FishingFacilityNotFoundException if no matching activity is found
    */
-  public FishingFacility getByIdAndCompanyId(Long id, Integer companyId){
-    return fishingFacilityRepository.findFishingFacilitiesByIdAndCompany_Id(id, companyId.longValue())
-            .orElseThrow(() -> new FishingFacilityNotFoundException("Could not find Fishing Facility with that ID!"));
+  public FishingFacility getByIdAndCompanyId(Long id, Integer companyId) {
+    return fishingFacilityRepository
+            .findFishingFacilitiesByIdAndCompany_Id(id, companyId.longValue())
+            .orElseThrow(() -> new FishingFacilityNotFoundException(
+                            "Could not find Fishing Facility with that ID!"
+                    )
+            );
   }
 
 
