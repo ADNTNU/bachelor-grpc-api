@@ -1,4 +1,4 @@
-package no.ntnu.gr10.bachelor_grpc_api.exception;
+package no.ntnu.gr10.bachelorgrpcapi.exception;
 
 /**
  * Custom exception class for handling invalid role errors.
@@ -9,6 +9,11 @@ package no.ntnu.gr10.bachelor_grpc_api.exception;
  * @version 16.04.2025
  */
 public class InvalidRoleException extends IllegalArgumentException {
+  /**
+   * Default constructor for InvalidRoleException.
+   *
+   * @param message the error message to be associated with this exception
+   */
   public InvalidRoleException(String message) {
     super(message);
   }

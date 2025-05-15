@@ -1,34 +1,56 @@
-package no.ntnu.gr10.bachelor_grpc_api.fishingFacility;
+package no.ntnu.gr10.bachelorgrpcapi.fishingfacility;
 
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
-import net.devh.boot.grpc.server.service.GrpcService;
-import no.ntnu.gr10.bachelor_grpc_api.exception.FishingFacilityNotFoundException;
-import no.ntnu.gr10.bachelor_grpc_api.security.Role;
-import no.ntnu.gr10.bachelor_grpc_api.security.RolesAllowed;
-import no.ntnu.gr10.bachelor_grpc_api.security.SecurityConstants;
-
 import java.time.ZoneOffset;
 import java.util.List;
+import net.devh.boot.grpc.server.service.GrpcService;
+import no.ntnu.gr10.bachelorgrpcapi.exception.FishingFacilityNotFoundException;
+import no.ntnu.gr10.bachelorgrpcapi.security.SecurityConstants;
 
+
+/**
+ * gRPC service implementation for FishingFacility operations.
+ *
+ * <p>Provides methods to fetch a single FishingFacility by ID or list all facilities
+ * belonging to the authenticated user's company.
+ * </p>
+ *
+ * @author Daniel Neset
+ * @version 06.05.2025
+ */
 @GrpcService
-public class FishingFacilityServiceImpl extends FishingFacilityServiceGrpc.FishingFacilityServiceImplBase{
+public class FishingFacilityServiceImpl
+        extends FishingFacilityServiceGrpc.FishingFacilityServiceImplBase {
 
   private final FishingFacilityService fishingFacilityService;
 
-  public FishingFacilityServiceImpl(FishingFacilityService fishingFacilityService){
+
+  /**
+   * Constructs a new FishingFacilityService with the given service.
+   *
+   * @param fishingFacilityService the business service for FishingFacility operations
+   */
+  public FishingFacilityServiceImpl(FishingFacilityService fishingFacilityService) {
     this.fishingFacilityService = fishingFacilityService;
   }
 
+
+  /**
+   * Retrieves a single FishsingFacility by its ID.
+   *
+   * @param req     The request containing the activity ID
+   * @param respObs The gRPC stream observer to send the response or error
+   */
   @Override
-  @RolesAllowed({Role.FISHING_FACILITY})
   public void getFishingFacility(GetFishingFacilityRequest req,
                                  StreamObserver<ResponseFishingFacility> respObs) {
 
     Long companyId = SecurityConstants.COMPANY_ID_CTX_KEY.get();
 
     try {
-      FishingFacility entity = fishingFacilityService.getByIdAndCompanyId(req.getId(), companyId.intValue());
+      FishingFacility entity = fishingFacilityService
+              .getByIdAndCompanyId(req.getId(), companyId.intValue());
 
       ResponseFishingFacility responseFishingFacility = FishingFacilityMapper
               .toProtoBuilder(entity)
@@ -53,15 +75,22 @@ public class FishingFacilityServiceImpl extends FishingFacilityServiceGrpc.Fishi
     }
   }
 
+
+  /**
+   * Lists all FishingFacility entities for the authenticated user's company.
+   *
+   * @param req     the (possibly empty) request for listing activities
+   * @param respObs the gRPC stream observer to send the response or error
+   */
   @Override
-  @RolesAllowed({Role.FISHING_FACILITY})
   public void listFishingFacilities(ListFishingFacilitiesRequest req,
                                     StreamObserver<ListFishingFacilitiesResponse> respObs) {
 
     Integer companyId = SecurityConstants.COMPANY_ID_CTX_KEY.get().intValue();
 
     try {
-      List<FishingFacility> entities = fishingFacilityService.getAllFishingFacilitiesWithCompanyId(companyId);
+      List<FishingFacility> entities = fishingFacilityService
+              .getAllFishingFacilitiesWithCompanyId(companyId);
 
       List<ResponseFishingFacility> protos = entities.stream()
               .map(FishingFacilityMapper::toProtoBuilder)

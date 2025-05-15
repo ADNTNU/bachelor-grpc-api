@@ -1,4 +1,4 @@
-package no.ntnu.gr10.bachelor_grpc_api.security;
+package no.ntnu.gr10.bachelorgrpcapi.security;
 
 import io.grpc.Context;
 import io.grpc.Metadata;
@@ -6,8 +6,8 @@ import io.grpc.Metadata;
 
 /**
  * Defines gRPC security-related constants for metadata keys and context keys.
- * <p>
- * These constants are used for extracting authorization headers and
+ *
+ * <p>These constants are used for extracting authorization headers and
  * propagating company ID and user authorities within gRPC contexts.
  * </p>
  *
